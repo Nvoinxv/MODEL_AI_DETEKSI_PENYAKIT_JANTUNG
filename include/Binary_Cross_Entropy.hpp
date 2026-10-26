@@ -25,7 +25,7 @@ public:
     float BCE_FORWARD(std::vector<float> &y_pred,
                       std::vector<float> &y_actual);
 
-    float BCE_BACKWARD(
+    std::vector<float> BCE_BACKWARD(
         std::vector<float> &y_pred,
         std::vector<float> &y_actual);
 

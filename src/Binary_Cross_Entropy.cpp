@@ -36,23 +36,33 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
                                    y_pred.size());
 }
 
-float BCE_PERHITUNGAN::BCE_BACKWARD(
+std::vector<float> BCE_PERHITUNGAN::BCE_BACKWARD(
     std::vector<float> &y_pred,
     std::vector<float> &y_actual)
 {
+    const float epsilon = 1e-7f;
 
-    for (int i = 0;
-         i < hasil_perhitungan_tipe_data.y_train.size();
+    std::vector<float> grad_y_pred;
+    grad_y_pred.reserve(y_pred.size());
+
+    for (size_t i = 0;
+         i < y_pred.size();
          ++i)
     {
-        hasil_perhitungan = (hasil_perhitungan_tipe_data.y_train[i] -
-                             hasil_perhitungan_tipe_data.y_test[i]) /
-                            hasil_perhitungan_tipe_data.y_train[i] *
-                            (1.0f - hasil_perhitungan_tipe_data.y_train[i]);
+        float p = std::clamp(
+            y_pred[i],
+            epsilon,
+            1.0f - epsilon);
 
-        y_actual_grad = hasil_perhitungan_tipe_data.y_test[i];
-        y_pred_grad = hasil_perhitungan_tipe_data.y_train[i];
+        float y = y_actual[i];
+
+        hasil_perhitungan = (p - y) /
+                            (p * (1.0f - p));
+
+        grad_y_pred.push_back(
+            hasil_perhitungan /
+            static_cast<float>(y_pred.size()));
     }
 
-    return hasil_perhitungan;
+    return grad_y_pred;
 }
