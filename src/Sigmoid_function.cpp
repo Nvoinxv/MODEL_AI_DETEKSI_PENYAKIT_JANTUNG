@@ -6,6 +6,7 @@ AKTIVASI_SIGMOID::AKTIVASI_SIGMOID() : x_data(),
                                        hasil_perhitungan_sigmoid(0.0f),
                                        hasil_grad_sigmoid(),
                                        EULAR(2.718281828459045235360287471352),
+                                       aktivasi_sigmoid(),
                                        hasil_forward_sigmoid()
 {
 }

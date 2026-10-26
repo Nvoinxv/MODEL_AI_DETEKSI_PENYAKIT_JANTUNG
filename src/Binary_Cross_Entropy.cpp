@@ -4,7 +4,9 @@ BCE_PERHITUNGAN::BCE_PERHITUNGAN() : hasil_perhitungan_tipe_data(),
                                      y_actual(),
                                      eular(2.71828182846),
                                      hasil_perhitungan(0.0f),
-                                     y_pred()
+                                     y_pred(),
+                                     y_actual_grad(0.0f),
+                                     y_pred_grad(0.0f)
 {
 }
 
@@ -47,7 +49,15 @@ float BCE_PERHITUNGAN::BCE_BACKWARD(
                              hasil_perhitungan_tipe_data.y_test[i]) /
                             hasil_perhitungan_tipe_data.y_train[i] *
                             (1.0f - hasil_perhitungan_tipe_data.y_train[i]);
+
+        y_actual_grad = hasil_perhitungan_tipe_data.y_test[i];
+        y_pred_grad = hasil_perhitungan_tipe_data.y_train[i];
     }
+
+    float gabungan_perhitungan[3] = {
+        hasil_perhitungan,
+        y_actual_grad,
+        y_pred_grad};
 
     return hasil_perhitungan;
 }
