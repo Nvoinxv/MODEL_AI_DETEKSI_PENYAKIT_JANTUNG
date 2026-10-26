@@ -15,6 +15,9 @@ private:
     std::vector<float> y_pred;
     std::vector<float> y_actual;
 
+    float y_pred_grad;
+    float y_actual_grad;
+
     float hasil_perhitungan;
 
 public:
@@ -26,14 +29,14 @@ public:
         std::vector<float> &y_pred,
         std::vector<float> &y_actual);
 
-    const std::vector<float> &mendapatkan_y_actual_backward() const
+    const float &mendapatkan_y_actual_backward() const
     {
-        return y_actual;
+        return y_actual_grad;
     }
 
-    const std::vector<float> &mendapatkan_y_pred_backward() const
+    const float &mendapatkan_y_pred_backward() const
     {
-        return y_pred;
+        return y_pred_grad;
     }
 
     const float &mendapatkan_grad_output() const

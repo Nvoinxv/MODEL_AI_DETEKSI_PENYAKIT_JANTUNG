@@ -54,10 +54,5 @@ float BCE_PERHITUNGAN::BCE_BACKWARD(
         y_pred_grad = hasil_perhitungan_tipe_data.y_train[i];
     }
 
-    float gabungan_perhitungan[3] = {
-        hasil_perhitungan,
-        y_actual_grad,
-        y_pred_grad};
-
     return hasil_perhitungan;
 }

@@ -3,7 +3,7 @@
 RELU_LAYER_AKTIVASI::RELU_LAYER_AKTIVASI() : x_data(),
                                              x_data_grad(),
                                              hasil_perhitungan(0.0f),
-                                             hasil_perhitungan_grad(),
+                                             hasil_perhitungan_grad()
 {
 }
 
@@ -30,7 +30,7 @@ std::vector<float> RELU_LAYER_AKTIVASI::RELU_FORWARD(
     return x_data;
 }
 
-std::vector<float> RELU_LAYER_AKTIVASI::RELU_BACKWARD(
+std::vector<std::vector<float>> RELU_LAYER_AKTIVASI::RELU_BACKWARD(
     std::vector<float> &x_data,
     std::vector<float> &x_data_grad)
 {

@@ -10,13 +10,14 @@ class RELU_LAYER_AKTIVASI
 private:
     std::vector<float> x_data;
 
-    std::vector<float> x_data_grad;
-
     float hasil_perhitungan;
 
     std::vector<float> y_data_grad;
 
+    std::vector<std::vector<float>> hasil_perhitungan_grad;
+
     AKTIVASI_SIGMOID aktivasi_sigmoid;
+    std::vector<float> x_data_grad = aktivasi_sigmoid.mendapatkan_sigmoid_grad();
 
 public:
     RELU_LAYER_AKTIVASI();
@@ -24,7 +25,7 @@ public:
     std::vector<float> RELU_FORWARD(
         std::vector<float> &x_data);
 
-    std::vector<float> RELU_BACKWARD(
+    std::vector<std::vector<float>> RELU_BACKWARD(
         std::vector<float> &x_data_grad);
 
     const std::vector<float> &mendapatkan_x_grad()
