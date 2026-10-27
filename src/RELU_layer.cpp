@@ -30,28 +30,68 @@ std::vector<float> RELU_LAYER_AKTIVASI::RELU_FORWARD(
     return x_data;
 }
 
-std::vector<std::vector<float>> RELU_LAYER_AKTIVASI::RELU_BACKWARD(
-    std::vector<float> &x_data,
-    std::vector<float> &x_data_grad)
+#include "RELU_layer.hpp"
+
+RELU_LAYER_AKTIVASI::RELU_LAYER_AKTIVASI() : x_data(),
+                                             hasil_perhitungan(0.0f),
+                                             y_data_grad(),
+                                             hasil_perhitungan_grad()
 {
-    int n = x_data.size();
+}
 
-    for (int i = 0; i < n; ++i)
+std::vector<float> RELU_LAYER_AKTIVASI::RELU_FORWARD(
+    std::vector<float> &x_data)
+{
+    this->x_data = x_data;
+
+    std::vector<float> hasil_forward_relu;
+
+    size_t n = x_data.size();
+
+    for (size_t i = 0; i < n; ++i)
     {
-        if (x_data[i] > 0)
+        if (x_data[i] > 0.0f)
         {
-            x_data[i] = 1.0f;
+            hasil_perhitungan = x_data[i];
         }
 
-        else if (x_data[i] <= 0.0f)
+        else
         {
-            x_data[i] = 0.0f;
+            hasil_perhitungan = 0.0f;
         }
 
-        hasil_perhitungan = x_data_grad[i] * x_data[i];
+        hasil_forward_relu.push_back(hasil_perhitungan);
     }
 
-    hasil_perhitungan_grad.push_back(hasil_perhitungan);
+    return hasil_forward_relu;
+}
+
+std::vector<float> RELU_LAYER_AKTIVASI::RELU_BACKWARD(
+    std::vector<float> &x_data_grad)
+{
+    hasil_perhitungan_grad.clear();
+
+    size_t n = this->x_data.size();
+
+    if (x_data_grad.size() != n)
+    {
+        return hasil_perhitungan_grad;
+    }
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        if (this->x_data[i] > 0.0f)
+        {
+            hasil_perhitungan = x_data_grad[i];
+        }
+
+        else
+        {
+            hasil_perhitungan = 0.0f;
+        }
+
+        hasil_perhitungan_grad.push_back(hasil_perhitungan);
+    }
 
     return hasil_perhitungan_grad;
 }
