@@ -20,7 +20,7 @@ class DENSE_LAYER_NN
 private:
     RELU_LAYER_AKTIVASI relu;
 
-    std::vector<float> hasil_output_grad = relu.mendapatkan_x_grad();
+    std::vector<std::vector<float>> hasil_output_grad;
 
     float a_distribusi;
     float perhitungan_neuron;
@@ -70,8 +70,9 @@ public:
     std::vector<float> DENSE_FORWARD_LAYER(
         std::vector<std::vector<float>> &x_data);
 
-    std::vector<float> DENSE_BACKWARD_LAYER(
-        std::vector<std::vector<float>> &x_data);
+    std::vector<std::vector<float>> DENSE_BACKWARD_LAYER(
+        std::vector<std::vector<float>> &x_data,
+        std::vector<float> &x_data_grad);
 
     const std::vector<float> &mendapatkan_nilai_bobot_grad() const
     {

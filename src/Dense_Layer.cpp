@@ -2,82 +2,147 @@
 
 DENSE_LAYER_NN::DENSE_LAYER_NN() : hasil_output_grad(),
                                    a_distribusi(0.0f),
-                                   n_input(0.0f),
-                                   n_output(0.0f),
-                                   bias(0.0f)
+                                   perhitungan_neuron(0.0f),
+                                   bobot_grad(),
+                                   bias_grad(0.0f),
+                                   bias(0.0f),
+                                   n_input(0),
+                                   n_output(1),
+                                   a()
 {
 }
 
 std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
     std::vector<std::vector<float>> &x_data)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    std::uniform_real_distribution<float> dist(0.0f, 10.0f);
-
-    float a = dist(gen);
-    float negatif_a = -a;
-
-    std::vector<std::vector<float>> bobot;
-
     std::vector<float> hasil_perhitungan_dense_forward;
 
-    float perhitungan_dense = 0.0f;
-
-    for (int i = 0;
-         i < bobot.size();
-         ++i)
+    if (x_data.empty() || x_data[0].empty())
     {
+        return hasil_perhitungan_dense_forward;
+    }
 
-        for (int j = 0;
-             j < bobot[i].size();
-             ++j)
+    n_input = x_data[0].size();
+
+    for (size_t i = 0; i < x_data.size(); ++i)
+    {
+        if (x_data[i].size() != n_input)
         {
-            bobot[i][j] = inisialisasi_bobot(negatif_a, a);
+            return hasil_perhitungan_dense_forward;
         }
     }
 
-    for (int i = 0;
-         i < x_data.size();
-         ++i)
-    {
+    n_output = 1;
 
-        for (int j = 0;
-             j < x_data[i].size();
-             ++j)
+    if (a.bobot.size() != n_output ||
+        a.bobot[0].size() != n_input)
+    {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        float jumlah_input = static_cast<float>(n_input);
+        float jumlah_output = static_cast<float>(n_output);
+
+        a_distribusi = inisialisasi_bobot(
+            jumlah_input,
+            jumlah_output);
+
+        std::uniform_real_distribution<float> dist(
+            -a_distribusi,
+            a_distribusi);
+
+        a.bobot.assign(
+            n_output,
+            std::vector<float>(n_input));
+
+        for (size_t i = 0; i < n_input; ++i)
         {
-            perhitungan_dense += (x_data[i][j] *
-                                  bobot[i][j]) +
-                                 bias;
+            a.bobot[0][i] = dist(gen);
         }
+
+        a.bias = 0.0f;
+        bias = a.bias;
     }
 
-    hasil_perhitungan_dense_forward.push_back(perhitungan_dense);
+    for (size_t i = 0; i < x_data.size(); ++i)
+    {
+        float perhitungan_dense = 0.0f;
+
+        for (size_t j = 0; j < n_input; ++j)
+        {
+            perhitungan_dense +=
+                x_data[i][j] * a.bobot[0][j];
+        }
+
+        perhitungan_dense += a.bias;
+
+        hasil_perhitungan_dense_forward.push_back(
+            perhitungan_dense);
+    }
 
     return hasil_perhitungan_dense_forward;
 }
 
-std::vector<float> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
-    std::vector<std::vector<float>> &x_data)
+std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
+    std::vector<std::vector<float>> &x_data,
+    std::vector<float> &x_data_grad)
 {
-    float perhitungan_backward = 0.0f;
+    hasil_output_grad.clear();
+    bobot_grad.clear();
 
-    for (int i = 0;
-         i < x_data.size();
-         ++i)
+    bias_grad = 0.0f;
+
+    if (x_data.empty() ||
+        x_data_grad.size() != x_data.size() ||
+        a.bobot.size() != 1)
     {
-        for (int j = 0;
-             j < x_data[i].size();
-             ++j)
+        return hasil_output_grad;
+    }
+
+    n_input = x_data[0].size();
+
+    if (n_input == 0 || a.bobot[0].size() != n_input)
+    {
+        return hasil_output_grad;
+    }
+
+    for (size_t i = 0; i < x_data.size(); ++i)
+    {
+        if (x_data[i].size() != n_input)
         {
-            perhitungan_backward += (y_pred_grad - y_actual_grad) * x_data[i][j];
+            hasil_output_grad.clear();
+            return hasil_output_grad;
         }
     }
 
-    bias_grad = (y_pred_grad - y_actual_grad);
+    bobot_grad.assign(n_input, 0.0f);
 
-    bobot_grad.push_back(perhitungan_backward);
+    hasil_output_grad.assign(
+        x_data.size(),
+        std::vector<float>(n_input, 0.0f));
 
-    return bobot_grad;
+    for (size_t i = 0; i < x_data.size(); ++i)
+    {
+        for (size_t j = 0; j < n_input; ++j)
+        {
+            bobot_grad[j] +=
+                x_data[i][j] * x_data_grad[i];
+
+            hasil_output_grad[i][j] =
+                a.bobot[0][j] * x_data_grad[i];
+        }
+
+        bias_grad += x_data_grad[i];
+    }
+
+    float jumlah_data = static_cast<float>(x_data.size());
+
+    for (size_t j = 0; j < n_input; ++j)
+    {
+        bobot_grad[j] /= jumlah_data;
+    }
+
+    bias_grad /= jumlah_data;
+
+    return hasil_output_grad;
 }
