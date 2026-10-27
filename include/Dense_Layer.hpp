@@ -33,6 +33,9 @@ private:
     float n_input;
     float n_output;
 
+    std::vector<std::vector<float>> nilai_bobot;
+    float nilai_bias;
+
     BCE_PERHITUNGAN bce_loss;
 
     float y_actual_grad = bce_loss.mendapatkan_y_actual_backward();
@@ -82,6 +85,16 @@ public:
     const float &mendapatkan_nilai_bias_grad() const
     {
         return bias_grad;
+    }
+
+    const std::vector<std::vector<float>> &mendapatkan_bobot() const
+    {
+        return nilai_bobot;
+    }
+
+    const float &mendapatkan_bias()
+    {
+        return nilai_bias;
     }
 };
 

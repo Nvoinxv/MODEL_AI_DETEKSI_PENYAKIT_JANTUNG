@@ -1,24 +1,37 @@
 #include "SGD.hpp"
 
-Sthocastic_Gradient_Descent::Sthocastic_Gradient_Descent() : nilai_bobot_grad(),
-                                                             nilai_bias_grad()
+Sthocastic_Gradient_Descent::Sthocastic_Gradient_Descent()
 {
 }
 
-std::vector<float> Sthocastic_Gradient_Descent::update_parameter(
-    std::vector<float> &nilai_bobot,
-    float &nilai_bias,
+void Sthocastic_Gradient_Descent::update_parameter(
+    DENSE_LAYER_NN &dense_layer,
     float &learning_rate)
 {
-    for (int i = 0;
-         i < nilai_bobot.size();
-         ++i)
+    std::vector<std::vector<float>> &nilai_bobot = dense_layer.mendapatkan_bobot();
+
+    float &nilai_bias = dense_layer.mendapatkan_bias();
+
+    const std::vector<float> &nilai_bobot_grad =
+        dense_layer.mendapatkan_nilai_bobot_grad();
+
+    const float &nilai_bias_grad =
+        dense_layer.mendapatkan_nilai_bias_grad();
+
+    if (nilai_bobot.empty() ||
+        nilai_bobot[0].size() != nilai_bobot_grad.size())
     {
-        nilai_bobot[i] - (learning_rate * nilai_bobot_grad[i]);
+        return;
     }
 
-    float perhitungan_bias_baru = 0.0f;
-    perhitungan_bias_baru = nilai_bias - (learning_rate * nilai_bias_grad);
+    for (size_t i = 0;
+         i < nilai_bobot[0].size();
+         ++i)
+    {
+        nilai_bobot[0][i] -=
+            learning_rate * nilai_bobot_grad[i];
+    }
 
-    std::vector<float> menghasilkan_nilai;
+    nilai_bias -=
+        learning_rate * nilai_bias_grad;
 }
