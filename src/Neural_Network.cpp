@@ -51,6 +51,8 @@ void neural_network_cpp::pelatihan_model_ai(
     std::vector<float> &y_train,
     int &epoch)
 {
+    std::cout << "MEMULAI PELATIHAN MODEL AI\n";
+
     for (int i = 0; i < epoch; ++i)
     {
         forward_nn();
@@ -66,4 +68,69 @@ void neural_network_cpp::pelatihan_model_ai(
     std::cout << "PELATIHAN MODEL AI SELESAI\n";
 }
 
-void neural_network_cpp::evaluasi_model_ai()
+void neural_network_cpp::evaluasi_model_ai(std::vector<float> &y_train,
+                                           std::vector<float> &y_test)
+{
+    std::cout << "MEMULAI EVALUASI MODEL AI\n";
+
+    std::cout << "HASIL NILAI LOSS MODEL AI: "
+              << hasil_loss << "\n";
+
+    float hasil_akurasi = 0.0f;
+
+    for (int i = 0;
+         i < y_train.size();
+         ++i)
+    {
+        hasil_akurasi = (y_test[i]) / (y_train[i]);
+    }
+
+    float konversi_persen = hasil_akurasi * 100;
+
+    std::cout << "HASIL AKURASI MODEL: "
+              << konversi_persen
+              << "%" << "\n";
+
+    if (konversi_persen >= 70)
+    {
+        std::cout << "AKURASI HASIL PELATIHAN BAGUS\n";
+    }
+
+    else
+    {
+        std::cout << "AKURASI HASIL PELATIHAN KURANG BAGUS\n";
+    }
+
+    std::cout << "20 SAMPLE DATA KOMPERASI\n";
+
+    for (int i = 0;
+         i < 20;
+         ++i)
+    {
+        std::cout << "HASIL Y_ACUTAL: "
+                  << y_train[i]
+                  << " | " << "HASIL Y_PRED: "
+                  << y_test[i]
+                  << "\n";
+    }
+}
+
+void neural_network_cpp::pembersihan_memori_ai()
+{
+    std::cout << "MELAKUKAN PEMBERSIHAN MEMORI MODEL AI\n";
+    hasil_dense.clear();
+    hasil_relu.clear();
+    y_pred.clear();
+
+    grad_y_pred.clear();
+    grad_sigmoid.clear();
+    grad_relu.clear();
+
+    x_train.clear();
+    x_test.clear();
+
+    y_train.clear();
+    y_test.clear();
+
+    std::cout << "PEMBERSIHAN SUDAH SELESAI\n";
+}
