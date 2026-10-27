@@ -55,6 +55,8 @@ public:
     void backward_nn();
 
     void pelatihan_model_ai(
+        std::vector<std::vector<float>> &x_train,
+        std::vector<float> &y_train,
         int &epoch);
 
     void evaluasi_model_ai(std::vector<float> &y_train,

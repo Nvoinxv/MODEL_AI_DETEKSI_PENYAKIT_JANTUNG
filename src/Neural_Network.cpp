@@ -45,3 +45,25 @@ void neural_network_cpp::backward_nn()
         x_train,
         grad_relu);
 }
+
+void neural_network_cpp::pelatihan_model_ai(
+    std::vector<std::vector<float>> &x_train,
+    std::vector<float> &y_train,
+    int &epoch)
+{
+    for (int i = 0; i < epoch; ++i)
+    {
+        forward_nn();
+        backward_nn();
+
+        std::cout << "EPOCH "
+                  << (i + 1) << ":\n";
+
+        std::cout << "NILAI LOSS: "
+                  << hasil_loss << "\n";
+    }
+
+    std::cout << "PELATIHAN MODEL AI SELESAI\n";
+}
+
+void neural_network_cpp::evaluasi_model_ai()
