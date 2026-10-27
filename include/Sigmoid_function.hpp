@@ -24,8 +24,8 @@ public:
 
     std::vector<float> SIGMOID_FORWARD(std::vector<float> &x_data);
 
-    std::vector<float> SIGMOID_BACKWARD(float &y_actual_grad,
-                                        float &y_pred_grad);
+    std::vector<float> SIGMOID_BACKWARD(std::vector<float> &y_pred,
+                                        std::vector<float> &y_pred_grad);
 
     /*
     const float &mendapatkan_nilai_sigmoid_grad()

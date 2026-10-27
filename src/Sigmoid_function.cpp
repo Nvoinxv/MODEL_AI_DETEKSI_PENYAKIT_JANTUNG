@@ -27,12 +27,26 @@ std::vector<float> AKTIVASI_SIGMOID::SIGMOID_FORWARD(
 }
 
 std::vector<float> AKTIVASI_SIGMOID::SIGMOID_BACKWARD(
-    float &y_pred_grad,
-    float &y_actual_grad)
+    std::vector<float> &y_pred,
+    std::vector<float> &y_pred_grad)
 {
-    hasil_perhitungan_sigmoid = y_pred_grad - y_actual_grad;
+    hasil_grad_sigmoid.clear();
 
-    hasil_grad_sigmoid.push_back(hasil_perhitungan_sigmoid);
+    if (y_pred.size() != y_pred_grad.size())
+    {
+        return hasil_grad_sigmoid;
+    }
+
+    for (size_t i = 0; i < y_pred.size(); ++i)
+    {
+        hasil_perhitungan_sigmoid =
+            y_pred_grad[i] *
+            y_pred[i] *
+            (1.0f - y_pred[i]);
+
+        hasil_grad_sigmoid.push_back(
+            hasil_perhitungan_sigmoid);
+    }
 
     return hasil_grad_sigmoid;
 }

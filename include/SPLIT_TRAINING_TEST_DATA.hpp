@@ -25,7 +25,7 @@ public:
     TRAIN_TEST_DATA_X_Y();
 
     TIPE_DATA_TRAIN fit(std::vector<std::vector<float>> &x_data,
-                        std::vector<size_t> &y_data,
+                        std::vector<float> &y_data,
                         float &ukuran_train_data,
                         float &ukuran_test_data);
 };
