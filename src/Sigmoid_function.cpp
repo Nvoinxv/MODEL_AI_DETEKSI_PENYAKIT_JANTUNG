@@ -11,11 +11,14 @@ AKTIVASI_SIGMOID::AKTIVASI_SIGMOID() : x_data(),
 }
 
 std::vector<float> AKTIVASI_SIGMOID::SIGMOID_FORWARD(
+    float &neuron_total,
     std::vector<float> &x_data)
 {
     int n = x_data.size();
 
-    for (int i = 0; i < n; ++i)
+    float n_total = n * neuron_total;
+
+    for (int i = 0; i < n_total; ++i)
     {
         hasil_perhitungan_sigmoid = (1.0f /
                                      (1.0f + std::pow(EULAR, -x_data[i])));

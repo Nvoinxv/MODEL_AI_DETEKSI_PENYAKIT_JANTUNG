@@ -15,6 +15,8 @@ private:
     std::vector<float> hasil_grad_sigmoid;
     std::vector<float> hasil_forward_sigmoid;
 
+    float neuron_total;
+
     float hasil_perhitungan_sigmoid;
 
     const float EULAR = 2.718281828459045235360287471352;
@@ -22,7 +24,8 @@ private:
 public:
     AKTIVASI_SIGMOID();
 
-    std::vector<float> SIGMOID_FORWARD(std::vector<float> &x_data);
+    std::vector<float> SIGMOID_FORWARD(float &neuorn_total,
+                                       std::vector<float> &x_data);
 
     std::vector<float> SIGMOID_BACKWARD(std::vector<float> &y_pred,
                                         std::vector<float> &y_pred_grad);
