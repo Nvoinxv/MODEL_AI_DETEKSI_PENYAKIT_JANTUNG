@@ -14,7 +14,7 @@ MEMBACA_FILE_CSV_CPP::MEMBACA_FILE_CSV_CPP() : x_data(), y_data(), mendapatkan_t
 void MEMBACA_FILE_CSV_CPP::membaca_file_csv(
     std::ifstream &data_csv,
     std::vector<std::vector<float>> &x_data,
-    std::vector<size_t> &y_data)
+    std::vector<float> &y_data)
 {
     if (!std::getline(data_csv, baris))
     {
@@ -64,7 +64,7 @@ void MEMBACA_FILE_CSV_CPP::membaca_file_csv(
 
 void MEMBACA_FILE_CSV_CPP::menampilkan_data_csv(
     std::vector<std::vector<float>> &x_data,
-    std::vector<size_t> &y_data)
+    std::vector<float> &y_data)
 {
     std::cout << "MENAMPILKAN DATA CSV PER INDEKS\n";
 
@@ -108,7 +108,7 @@ void MEMBACA_FILE_CSV_CPP::menampilkan_data_csv(
 
 void MEMBACA_FILE_CSV_CPP::menampilkan_tipe_tipe_data_csv(
     std::vector<std::vector<float>> &x_data,
-    std::vector<size_t> &y_data)
+    std::vector<float> &y_data)
 {
     std::cout << "MENAMPILKAN KONVERSI DATA PADA SETIAP CSV\n";
 

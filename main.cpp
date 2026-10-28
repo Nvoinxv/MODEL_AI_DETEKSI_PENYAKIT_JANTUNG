@@ -3,6 +3,7 @@
 #include "include/utils_program.hpp"
 #include "include/SPLIT_TRAINING_TEST_DATA.hpp"
 #include "include/Binary_Cross_Entropy.hpp"
+#include "include/Neural_Network.hpp"
 
 int main()
 {
@@ -12,7 +13,7 @@ int main()
     UTILS_CPP utils_cpp;
 
     std::vector<std::vector<float>> x_data;
-    std::vector<size_t> y_data;
+    std::vector<float> y_data;
 
     read_file_csv.membaca_file_csv(File_CSV, x_data, y_data);
 

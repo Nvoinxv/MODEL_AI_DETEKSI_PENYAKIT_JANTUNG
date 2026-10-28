@@ -16,7 +16,7 @@ private:
     std::vector<std::vector<float>> x_data;
 
     // UNTUK TARGTE CUKUP 1 VEKTOR
-    std::vector<int> y_data;
+    std::vector<float> y_data;
 
     std::vector<std::string> mendapatkan_teks_data;
 
@@ -35,13 +35,13 @@ public:
 
     void membaca_file_csv(std::ifstream &file_csv,
                           std::vector<std::vector<float>> &x_data,
-                          std::vector<size_t> &y_data);
+                          std::vector<float> &y_data);
 
     void menampilkan_data_csv(std::vector<std::vector<float>> &x_data,
-                              std::vector<size_t> &y_data);
+                              std::vector<float> &y_data);
 
     void menampilkan_tipe_tipe_data_csv(std::vector<std::vector<float>> &x_data,
-                                        std::vector<size_t> &y_data);
+                                        std::vector<float> &y_data);
 };
 
 #endif
