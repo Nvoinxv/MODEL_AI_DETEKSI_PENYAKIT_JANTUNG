@@ -113,5 +113,33 @@ int main()
 
     std::cout << "PERHITUNGAN DUMMY SELESAI\n";
 
+    // IMPLEMENTASI PADA NEURAL_NETWORK
+    std::cout << "MEMULAI PELATIHAN NEURAL NETWORK\n";
+    std::cout << "SISTEM AI DETEKSI PENYAKIT JANTUNG\n";
+
+    neural_network_cpp nn_train;
+
+    int epoch = 100;
+
+    // SIMPAN SETIAP VARIABEL PEMILIHAN DATA TRAIN DAN TEST
+    std::vector<std::vector<float>> x_train = train_test_data.x_train;
+    std::vector<std::vector<float>> x_test = train_test_data.x_test;
+
+    std::vector<float> y_train = train_test_data.y_train;
+    std::vector<float> y_test = train_test_data.y_test;
+
+    nn_train.pelatihan_model_ai(
+        x_train,
+        y_train,
+        epoch);
+
+    nn_train.evaluasi_model_ai(
+        y_train,
+        y_test);
+
+    nn_train.pembersihan_memori_ai();
+
+    std::cout << "PELATIHAN MODEL AI SELESAI\n";
+
     return 0;
 }
