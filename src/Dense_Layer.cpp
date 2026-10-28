@@ -14,7 +14,7 @@ DENSE_LAYER_NN::DENSE_LAYER_NN() : hasil_output_grad(),
 }
 
 std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
-    float &neuorn_total,
+    int &neuorn_total,
     std::vector<std::vector<float>> &x_data)
 {
     std::vector<float> hasil_perhitungan_dense_forward;

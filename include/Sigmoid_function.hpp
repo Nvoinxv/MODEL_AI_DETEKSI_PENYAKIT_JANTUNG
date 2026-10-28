@@ -24,7 +24,7 @@ private:
 public:
     AKTIVASI_SIGMOID();
 
-    std::vector<float> SIGMOID_FORWARD(float &neuorn_total,
+    std::vector<float> SIGMOID_FORWARD(int &neuorn_total,
                                        std::vector<float> &x_data);
 
     std::vector<float> SIGMOID_BACKWARD(std::vector<float> &y_pred,

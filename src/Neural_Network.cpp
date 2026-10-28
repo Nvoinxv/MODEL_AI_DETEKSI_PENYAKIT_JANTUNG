@@ -22,7 +22,7 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
 
 void neural_network_cpp::forward_nn()
 {
-    hasil_dense = dense_layer.DENSE_FORWARD_LAYER(x_train);
+    hasil_dense = dense_layer.DENSE_FORWARD_LAYER(128, x_train);
 
     hasil_relu = relu_layer.RELU_FORWARD(hasil_dense);
 

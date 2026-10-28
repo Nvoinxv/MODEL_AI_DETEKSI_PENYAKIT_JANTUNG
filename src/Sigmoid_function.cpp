@@ -11,12 +11,12 @@ AKTIVASI_SIGMOID::AKTIVASI_SIGMOID() : x_data(),
 }
 
 std::vector<float> AKTIVASI_SIGMOID::SIGMOID_FORWARD(
-    float &neuron_total,
+    int &neuron_total,
     std::vector<float> &x_data)
 {
     int n = x_data.size();
 
-    float n_total = n * neuron_total;
+    int n_total = n * neuron_total;
 
     for (int i = 0; i < n_total; ++i)
     {
