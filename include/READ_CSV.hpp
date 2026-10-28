@@ -28,7 +28,7 @@ private:
     float kolestrol;
     float detak_jantung;
     float st_depresi;
-    size_t penyakit_jantung;
+    float penyakit_jantung;
 
 public:
     MEMBACA_FILE_CSV_CPP();

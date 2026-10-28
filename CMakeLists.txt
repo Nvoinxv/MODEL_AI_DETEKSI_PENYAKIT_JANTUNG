@@ -10,7 +10,12 @@ add_executable(${PROJECT_NAME}
     src/PREPROCESSING_DATA.cpp
     src/utils_program.cpp
     src/SPLIT_TRAINING_TEST_DATA.cpp
-    src/Binary_Cross_Entropy.cpp)
+    src/Binary_Cross_Entropy.cpp
+    src/Dense_Layer.cpp
+    src/RELU_layer.cpp
+    src/Sigmoid_function.cpp
+    src/SGD.cpp
+    src/Neural_Network.cpp)
 
 target_include_directories(${PROJECT_NAME} PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/include

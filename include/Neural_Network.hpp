@@ -41,6 +41,8 @@ private:
 
     float hasil_loss;
 
+    float learning_rate = 0.01f;
+
     // PEMBAGIAN PELATIHAN DATA
     std::vector<std::vector<float>> x_data;
     std::vector<float> y_data;
