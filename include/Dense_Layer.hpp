@@ -73,7 +73,7 @@ public:
     DENSE_LAYER_NN();
 
     std::vector<float> DENSE_FORWARD_LAYER(
-        int &neuron,
+        int neuron,
         std::vector<std::vector<float>> &x_data);
 
     std::vector<std::vector<float>> DENSE_BACKWARD_LAYER(
@@ -90,12 +90,12 @@ public:
         return bias_grad;
     }
 
-    const std::vector<std::vector<float>> &mendapatkan_bobot() const
+    std::vector<std::vector<float>> &mendapatkan_bobot()
     {
         return nilai_bobot;
     }
 
-    const float &mendapatkan_bias()
+    float &mendapatkan_bias()
     {
         return nilai_bias;
     }
