@@ -33,6 +33,8 @@ private:
     float n_input;
     float n_output;
 
+    float neuron_total;
+
     std::vector<std::vector<float>> nilai_bobot;
     float nilai_bias;
 
@@ -71,6 +73,7 @@ public:
     DENSE_LAYER_NN();
 
     std::vector<float> DENSE_FORWARD_LAYER(
+        float &neuron,
         std::vector<std::vector<float>> &x_data);
 
     std::vector<std::vector<float>> DENSE_BACKWARD_LAYER(

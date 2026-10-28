@@ -8,11 +8,13 @@ DENSE_LAYER_NN::DENSE_LAYER_NN() : hasil_output_grad(),
                                    bias(0.0f),
                                    n_input(0),
                                    n_output(1),
-                                   a()
+                                   a(),
+                                   neuron_total(0.0f)
 {
 }
 
 std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
+    float &neuorn_total,
     std::vector<std::vector<float>> &x_data)
 {
     std::vector<float> hasil_perhitungan_dense_forward;
@@ -62,6 +64,16 @@ std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
 
         a.bias = 0.0f;
         bias = a.bias;
+    }
+
+    for (int i = 0; i < a.bobot.size(); ++i)
+    {
+        for (int j = 0; j < a.bobot[i].size(); ++j)
+        {
+            a.bobot[i][j] = a.bobot[i][j] * neuron_total;
+        }
+
+        a.bias = neuron_total;
     }
 
     for (size_t i = 0; i < x_data.size(); ++i)
