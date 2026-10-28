@@ -1,9 +1,7 @@
 #ifndef RELU_LAYER_HPP
 #define RELU_LAYER_HPP
 
-#include <cmath>
 #include <vector>
-#include "Sigmoid_function.hpp"
 
 class RELU_LAYER_AKTIVASI
 {
@@ -12,12 +10,7 @@ private:
 
     float hasil_perhitungan;
 
-    std::vector<float> y_data_grad;
-
     std::vector<float> hasil_perhitungan_grad;
-
-    AKTIVASI_SIGMOID aktivasi_sigmoid;
-    std::vector<float> x_data_grad = aktivasi_sigmoid.mendapatkan_sigmoid_grad();
 
 public:
     RELU_LAYER_AKTIVASI();
@@ -27,11 +20,6 @@ public:
 
     std::vector<float> RELU_BACKWARD(
         std::vector<float> &x_data_grad);
-
-    const std::vector<float> &mendapatkan_x_grad()
-    {
-        return x_data_grad;
-    }
 };
 
 #endif

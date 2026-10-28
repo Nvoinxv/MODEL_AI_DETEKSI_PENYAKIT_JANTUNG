@@ -2,19 +2,26 @@
 
 neural_network_cpp::neural_network_cpp() : bce_loss(),
                                            dense_layer(),
+                                           dense_layer_2(),
+                                           dense_layer_3(),
                                            relu_layer(),
+                                           relu_layer_2(),
+                                           relu_layer_3(),
+                                           dense_output_layer(),
                                            sigmoid_layer(),
                                            SGD_OPTIM(),
                                            variabel_train_test(),
                                            x_train(),
                                            x_train_layer_2(),
                                            x_train_layer_3(),
+                                           x_train_output(),
                                            x_test(),
                                            y_train(),
                                            y_test(),
                                            hasil_dense(),
                                            hasil_dense_2(),
                                            hasil_dense_3(),
+                                           hasil_dense_output_1d(),
                                            hasil_relu(),
                                            hasil_relu_2(),
                                            hasil_relu_3(),
@@ -27,27 +34,58 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
 {
 }
 
+std::vector<std::vector<float>> mengubah_1d_ke_2d(
+    const std::vector<float> &data)
+{
+    std::vector<std::vector<float>> hasil;
+
+    hasil.reserve(data.size());
+
+    for (const float &nilai : data)
+    {
+        hasil.push_back({nilai});
+    }
+
+    return hasil;
+}
+
 void neural_network_cpp::forward_nn()
 {
     // BAGIAN PERTAMA DENGAN NEURON LAYER 128
     hasil_dense = dense_layer.DENSE_FORWARD_LAYER(128, x_train);
     hasil_relu = relu_layer.RELU_FORWARD(hasil_dense);
 
-    x_train_layer_2.push_back(hasil_relu);
+    // BAGIAN KEDUA DENGAN NEURON LAYER 64
+    x_train_layer_2 = mengubah_1d_ke_2d(hasil_relu);
 
-    // BAGIAN KEDUA DENGAN NEURON LAYAR 64
-    hasil_dense_2 = dense_layer.DENSE_FORWARD_LAYER(64, x_train_layer_2);
-    hasil_relu_2 = relu_layer.RELU_FORWARD(hasil_dense_2);
+    hasil_dense_2 = dense_layer_2.DENSE_FORWARD_LAYER(
+        64,
+        x_train_layer_2);
 
-    x_train_layer_3.push_back(hasil_dense_2);
+    hasil_relu_2 = relu_layer_2.RELU_FORWARD(hasil_dense_2);
 
-    // BAGIAN KETIGA DENGAN NEURON LAYAR 32
-    hasil_dense_3 = dense_layer.DENSE_FORWARD_LAYER(32, x_train_layer_3);
-    hasil_relu_3 = relu_layer.RELU_FORWARD(hasil_dense_3);
+    // BAGIAN KETIGA DENGAN NEURON LAYER 32
+    x_train_layer_3 = mengubah_1d_ke_2d(hasil_relu_2);
 
-    // BAGIAN AKHIR NEUORN AKTIVASI FUNGSI
-    hasil_dense = y_pred = sigmoid_layer.SIGMOID_FORWARD(1, hasil_relu_3);
+    hasil_dense_3 = dense_layer_3.DENSE_FORWARD_LAYER(
+        32,
+        x_train_layer_3);
 
+    hasil_relu_3 = relu_layer_3.RELU_FORWARD(hasil_dense_3);
+
+    // BAGIAN AKHIR DENGAN OUTPUT LAYER
+    x_train_output = mengubah_1d_ke_2d(hasil_relu_3);
+
+    hasil_dense_output = dense_output_layer.DENSE_FORWARD_LAYER(
+        1,
+        x_train_output);
+
+    // FUNGSI AKTIVASI SIGMOID
+    y_pred = sigmoid_layer.SIGMOID_FORWARD(
+        1,
+        hasil_dense_output);
+
+    // PERHITUNGAN LOSS
     hasil_loss = bce_loss.BCE_FORWARD(y_pred, y_train);
 }
 
@@ -75,6 +113,15 @@ void neural_network_cpp::pelatihan_model_ai(
     std::vector<float> &y_train,
     int &epoch)
 {
+    this->x_train = x_train;
+    this->y_train = y_train;
+
+    std::cout << "UKURAN X TRAIN DALAM MODEL: "
+              << this->x_train.size() << "\n";
+
+    std::cout << "UKURAN Y TRAIN DALAM MODEL: "
+              << this->y_train.size() << "\n";
+
     std::cout << "MEMULAI PELATIHAN MODEL AI\n";
 
     for (int i = 0; i < epoch; ++i)

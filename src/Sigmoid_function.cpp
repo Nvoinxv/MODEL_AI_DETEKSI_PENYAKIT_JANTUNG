@@ -14,17 +14,18 @@ std::vector<float> AKTIVASI_SIGMOID::SIGMOID_FORWARD(
     int neuron_total,
     std::vector<float> &x_data)
 {
-    int n = x_data.size();
+    hasil_forward_sigmoid.clear();
 
-    int n_total = n * neuron_total;
+    hasil_forward_sigmoid.reserve(x_data.size());
 
-    for (int i = 0; i < n_total; ++i)
+    for (size_t i = 0; i < x_data.size(); ++i)
     {
-        hasil_perhitungan_sigmoid = (1.0f /
-                                     (1.0f + std::pow(EULAR, -x_data[i])));
-    }
+        hasil_perhitungan_sigmoid =
+            1.0f / (1.0f + std::exp(-x_data[i]));
 
-    hasil_forward_sigmoid.push_back(hasil_perhitungan_sigmoid);
+        hasil_forward_sigmoid.push_back(
+            hasil_perhitungan_sigmoid);
+    }
 
     return hasil_forward_sigmoid;
 }

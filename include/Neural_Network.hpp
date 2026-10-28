@@ -14,8 +14,16 @@ class neural_network_cpp
 private:
     // PEMANGGILAN KELAS
     BCE_PERHITUNGAN bce_loss;
+
     DENSE_LAYER_NN dense_layer;
+    DENSE_LAYER_NN dense_layer_2;
+    DENSE_LAYER_NN dense_layer_3;
+    DENSE_LAYER_NN dense_output_layer;
+
     RELU_LAYER_AKTIVASI relu_layer;
+    RELU_LAYER_AKTIVASI relu_layer_2;
+    RELU_LAYER_AKTIVASI relu_layer_3;
+
     AKTIVASI_SIGMOID sigmoid_layer;
     Sthocastic_Gradient_Descent SGD_OPTIM;
 
@@ -26,6 +34,8 @@ private:
     std::vector<float> hasil_dense;
     std::vector<float> hasil_dense_2;
     std::vector<float> hasil_dense_3;
+    std::vector<float> hasil_dense_output_1d;
+    std::vector<float> hasil_dense_output;
 
     std::vector<float> hasil_relu;
     std::vector<float> hasil_relu_2;
@@ -58,6 +68,7 @@ private:
     std::vector<std::vector<float>> x_train = pembagian_pelatihan.x_train;
     std::vector<std::vector<float>> x_train_layer_2;
     std::vector<std::vector<float>> x_train_layer_3;
+    std::vector<std::vector<float>> x_train_output;
 
     std::vector<std::vector<float>> x_test = pembagian_pelatihan.x_test;
 
