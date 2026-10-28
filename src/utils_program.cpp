@@ -22,6 +22,28 @@ void UTILS_CPP::print_vektor_2d(std::vector<std::vector<float>> &data)
     std::cout << "\n";
 }
 
+std::vector<std::vector<float>> UTILS_CPP::data_random_float_2d(
+    std::vector<std::vector<float>> &data,
+    int &n)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dist(0, 1);
+
+    data.clear();
+
+    for (int i = 0; i < n; ++i)
+    {
+
+        for (int j = 0; j < data[i].size(); ++j)
+        {
+            data[i][j] = dist(gen);
+        }
+    }
+
+    return data;
+}
+
 std::vector<float> UTILS_CPP::data_random_int_1d(
     std::vector<float> &data,
     int &n)
