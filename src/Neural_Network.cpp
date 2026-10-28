@@ -7,11 +7,17 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
                                            SGD_OPTIM(),
                                            variabel_train_test(),
                                            x_train(),
+                                           x_train_layer_2(),
+                                           x_train_layer_3(),
                                            x_test(),
                                            y_train(),
                                            y_test(),
                                            hasil_dense(),
+                                           hasil_dense_2(),
+                                           hasil_dense_3(),
                                            hasil_relu(),
+                                           hasil_relu_2(),
+                                           hasil_relu_3(),
                                            y_pred(),
                                            grad_y_pred(),
                                            grad_sigmoid(),
@@ -22,11 +28,24 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
 
 void neural_network_cpp::forward_nn()
 {
+    // BAGIAN PERTAMA DENGAN NEURON LAYER 128
     hasil_dense = dense_layer.DENSE_FORWARD_LAYER(128, x_train);
-
     hasil_relu = relu_layer.RELU_FORWARD(hasil_dense);
 
-    y_pred = sigmoid_layer.SIGMOID_FORWARD(hasil_relu);
+    x_train_layer_2.push_back(hasil_relu);
+
+    // BAGIAN KEDUA DENGAN NEURON LAYAR 64
+    hasil_dense_2 = dense_layer.DENSE_FORWARD_LAYER(64, x_train_layer_2);
+    hasil_relu_2 = relu_layer.RELU_FORWARD(hasil_dense_2);
+
+    x_train_layer_3.push_back(hasil_dense_2);
+
+    // BAGIAN KETIGA DENGAN NEURON LAYAR 32
+    hasil_dense_3 = dense_layer.DENSE_FORWARD_LAYER(32, x_train_layer_3);
+    hasil_relu_3 = relu_layer.RELU_FORWARD(hasil_dense_3);
+
+    // BAGIAN AKHIR NEUORN AKTIVASI FUNGSI
+    hasil_dense = y_pred = sigmoid_layer.SIGMOID_FORWARD(1, hasil_relu_3);
 
     hasil_loss = bce_loss.BCE_FORWARD(y_pred, y_train);
 }
