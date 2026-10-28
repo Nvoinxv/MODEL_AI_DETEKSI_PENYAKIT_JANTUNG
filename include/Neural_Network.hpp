@@ -12,6 +12,7 @@
 class neural_network_cpp
 {
 private:
+    // PEMANGGILAN KELAS
     BCE_PERHITUNGAN bce_loss;
     DENSE_LAYER_NN dense_layer;
     RELU_LAYER_AKTIVASI relu_layer;
@@ -21,6 +22,7 @@ private:
     TIPE_DATA_TRAIN variabel_train_test;
     TRAIN_TEST_DATA_X_Y train_test;
 
+    // MEMPERSIAPKAN VARIABEL NEURON FORWARD
     std::vector<float> hasil_dense;
     std::vector<float> hasil_dense_2;
     std::vector<float> hasil_dense_3;
@@ -31,6 +33,7 @@ private:
 
     std::vector<float> y_pred;
 
+    // MEMPERSIAPKAN VARIABEL BACKWARD
     std::vector<float> grad_y_pred;
     std::vector<float> grad_sigmoid;
 
@@ -38,6 +41,7 @@ private:
 
     float hasil_loss;
 
+    // PEMBAGIAN PELATIHAN DATA
     std::vector<std::vector<float>> x_data;
     std::vector<float> y_data;
 

@@ -22,7 +22,8 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
                                            grad_y_pred(),
                                            grad_sigmoid(),
                                            grad_relu(),
-                                           hasil_loss(0.0f)
+                                           hasil_loss(0.0f),
+                                           learning_rate(0.01f)
 {
 }
 
@@ -63,6 +64,10 @@ void neural_network_cpp::backward_nn()
     dense_layer.DENSE_BACKWARD_LAYER(
         x_train,
         grad_relu);
+
+    // OPTIMISASI UPDATE BOBOT DAN BIAS
+    SGD_OPTIM.update_parameter(dense_layer,
+                               learning_rate);
 }
 
 void neural_network_cpp::pelatihan_model_ai(
