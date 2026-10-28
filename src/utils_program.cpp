@@ -28,17 +28,20 @@ std::vector<std::vector<float>> UTILS_CPP::data_random_float_2d(
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dist(0, 1);
+    std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 
     data.clear();
 
     for (int i = 0; i < n; ++i)
     {
+        std::vector<float> data_random;
 
-        for (int j = 0; j < data[i].size(); ++j)
+        for (int j = 0; j < n; ++j)
         {
-            data[i][j] = dist(gen);
+            data_random.push_back(dist(gen));
         }
+
+        data.push_back(data_random);
     }
 
     return data;
