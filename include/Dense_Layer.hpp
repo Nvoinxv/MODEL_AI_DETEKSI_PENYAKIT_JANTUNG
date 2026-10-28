@@ -73,7 +73,7 @@ public:
     DENSE_LAYER_NN();
 
     std::vector<float> DENSE_FORWARD_LAYER(
-        float &neuron,
+        int &neuron,
         std::vector<std::vector<float>> &x_data);
 
     std::vector<std::vector<float>> DENSE_BACKWARD_LAYER(
