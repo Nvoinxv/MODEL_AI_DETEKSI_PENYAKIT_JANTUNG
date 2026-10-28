@@ -8,8 +8,9 @@ DENSE_LAYER_NN::DENSE_LAYER_NN() : hasil_output_grad(),
                                    bias(0.0f),
                                    n_input(0),
                                    n_output(1),
-                                   a(),
-                                   neuron_total(0.0f)
+                                   neuron_total(0.0f),
+                                   bce_loss(),
+                                   a()
 {
 }
 
@@ -19,12 +20,15 @@ std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
 {
     std::vector<float> hasil_perhitungan_dense_forward;
 
+    (void)neuorn_total;
+
     if (x_data.empty() || x_data[0].empty())
     {
         return hasil_perhitungan_dense_forward;
     }
 
     n_input = x_data[0].size();
+    n_output = 1;
 
     for (size_t i = 0; i < x_data.size(); ++i)
     {
@@ -34,10 +38,9 @@ std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
         }
     }
 
-    n_output = 1;
-
     if (a.bobot.size() != n_output ||
-        a.bobot[0].size() != n_input)
+        (a.bobot.size() == n_output &&
+         a.bobot[0].size() != n_input))
     {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -66,15 +69,7 @@ std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
         bias = a.bias;
     }
 
-    for (int i = 0; i < a.bobot.size(); ++i)
-    {
-        for (int j = 0; j < a.bobot[i].size(); ++j)
-        {
-            a.bobot[i][j] = a.bobot[i][j] * neuron_total;
-        }
-
-        a.bias = neuron_total;
-    }
+    hasil_perhitungan_dense_forward.reserve(x_data.size());
 
     for (size_t i = 0; i < x_data.size(); ++i)
     {

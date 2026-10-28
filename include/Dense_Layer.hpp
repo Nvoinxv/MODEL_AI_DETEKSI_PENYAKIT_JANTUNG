@@ -1,5 +1,5 @@
 #ifndef DENSE_LAYER_HPP
-#define DENSE_LAYEER_HPP
+#define DENSE_LAYER_HPP
 
 #include "RELU_layer.hpp"
 #include "SPLIT_TRAINING_TEST_DATA.hpp"
@@ -8,6 +8,8 @@
 
 #include <random>
 #include <cmath>
+#include <vector>
+#include <cstddef>
 
 struct DENSE_PARAMETER
 {
@@ -30,18 +32,12 @@ private:
 
     float bias = 0.0f;
 
-    float n_input;
-    float n_output;
+    size_t n_input;
+    size_t n_output;
 
     float neuron_total;
 
-    std::vector<std::vector<float>> nilai_bobot;
-    float nilai_bias;
-
     BCE_PERHITUNGAN bce_loss;
-
-    float y_actual_grad = bce_loss.mendapatkan_y_actual_backward();
-    float y_pred_grad = bce_loss.mendapatkan_y_pred_backward();
 
     DENSE_PARAMETER a;
 
@@ -49,20 +45,7 @@ private:
         float &n_input,
         float &n_out)
     {
-        for (int i = 0;
-             i < a.bobot.size();
-             ++i)
-        {
-
-            for (int j = 0;
-                 j < a.bobot[i].size();
-                 ++j)
-            {
-                n_input = a.bobot[i][j];
-            }
-        }
-
-        perhitungan_neuron = (6 / (n_input + n_out));
+        perhitungan_neuron = 6.0f / (n_input + n_out);
 
         a_distribusi = std::sqrt(perhitungan_neuron);
 
@@ -73,7 +56,7 @@ public:
     DENSE_LAYER_NN();
 
     std::vector<float> DENSE_FORWARD_LAYER(
-        int neuron,
+        int neuorn_total,
         std::vector<std::vector<float>> &x_data);
 
     std::vector<std::vector<float>> DENSE_BACKWARD_LAYER(
@@ -92,12 +75,12 @@ public:
 
     std::vector<std::vector<float>> &mendapatkan_bobot()
     {
-        return nilai_bobot;
+        return a.bobot;
     }
 
     float &mendapatkan_bias()
     {
-        return nilai_bias;
+        return a.bias;
     }
 };
 
