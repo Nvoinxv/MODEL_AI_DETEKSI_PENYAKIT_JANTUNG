@@ -56,10 +56,15 @@ int main()
 
     // TESTING DUMMY DATA
     // MENCOBA PERHITUNGAN LOSS
+
+    std::cout << "MENCOBA DUMMY PERHITUNGAN\n";
+
     std::vector<float> data_mentah_asli;
     std::vector<float> data_mentah_pred;
 
     int n = 10;
+
+    std::vector<std::vector<float>> data_x_dummy;
 
     utils_cpp.data_random_int_1d(data_mentah_asli, n);
     utils_cpp.data_random_int_1d(data_mentah_pred, n);
@@ -77,6 +82,36 @@ int main()
 
     std::cout << "HASIL LOSS TESTING FORWARD: "
               << forward_bce_test << "\n";
+
+    std::cout << "TESTING PADA DATA FORWARD DENSE\n";
+    std::vector<float> hasil_dense_forward_dummy;
+    DENSE_LAYER_NN dense_layer;
+
+    utils_cpp.data_random_float_2d(data_x_dummy, n);
+    hasil_dense_forward_dummy = dense_layer.DENSE_FORWARD_LAYER(64, data_x_dummy);
+
+    std::cout << "HASIL PERHITUNGAN DENSE FORWARD: ";
+    utils_cpp.print_vektor_1d_float(hasil_dense_forward_dummy);
+
+    std::cout << "TESTING PADA RELU FORWARD: ";
+    std::vector<float> hasil_relu_dummy;
+
+    RELU_LAYER_AKTIVASI relu_layer;
+    hasil_relu_dummy = relu_layer.RELU_FORWARD(hasil_dense_forward_dummy);
+
+    std::cout << "HASIL PERHITUNGAN RELU FORWARD: ";
+    utils_cpp.print_vektor_1d_float(hasil_relu_dummy);
+
+    std::cout << "TESTING PERHITUNGAN SIGMOID FORWARD: ";
+    std::vector<float> hasil_sigmoid_dummy;
+
+    AKTIVASI_SIGMOID sigmoid_layer;
+    hasil_sigmoid_dummy = sigmoid_layer.SIGMOID_FORWARD(1, hasil_relu_dummy);
+
+    std::cout << "HASIL PERHITUNGAN SIGMOID FORWARD: ";
+    utils_cpp.print_vektor_1d_float(hasil_sigmoid_dummy);
+
+    std::cout << "PERHITUNGAN DUMMY SELESAI\n";
 
     return 0;
 }
