@@ -105,7 +105,7 @@ std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
 
     size_t jumlah_data = x_data.size();
     size_t jumlah_input = x_data[0].size();
-    size_t jumlah_output = a.bobot[0].size();
+    size_t jumlah_output = a.bobot.size();
 
     if (x_data_grad.size() != jumlah_data * jumlah_output)
     {
@@ -113,10 +113,10 @@ std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
             "Ukuran gradien output tidak sesuai dengan output dense.");
     }
 
-    if (a.bobot.size() != jumlah_input)
+    if (a.bobot.size() != jumlah_output)
     {
         throw std::invalid_argument(
-            "Ukuran bobot tidak sesuai dengan jumlah input.");
+            "Ukuran bobot tidak sesuai dengan jumlah neuron output.");
     }
 
     for (const auto &baris : x_data)
@@ -130,14 +130,17 @@ std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
 
     for (const auto &baris : a.bobot)
     {
-        if (baris.size() != jumlah_output)
+        if (baris.size() != jumlah_input)
         {
             throw std::invalid_argument(
-                "Ukuran setiap baris bobot harus sama.");
+                "Ukuran setiap baris bobot tidak sesuai dengan jumlah input.");
         }
     }
 
-    bobot_grad.assign(jumlah_input * jumlah_output, 0.0f);
+    bobot_grad.assign(
+        jumlah_input * jumlah_output,
+        0.0f);
+
     bias_grad = 0.0f;
 
     std::vector<std::vector<float>> grad_input(
@@ -161,11 +164,11 @@ std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
                  k < jumlah_input;
                  ++k)
             {
-                bobot_grad[k * jumlah_output + j] +=
+                bobot_grad[j * jumlah_input + k] +=
                     x_data[i][k] * grad_output;
 
                 grad_input[i][k] +=
-                    grad_output * a.bobot[k][j];
+                    grad_output * a.bobot[j][k];
             }
         }
     }

@@ -51,6 +51,27 @@ std::vector<std::vector<float>> mengubah_1d_ke_2d(
     return hasil;
 }
 
+std::vector<float> mengubah_2d_ke_1d(
+    const std::vector<std::vector<float>> &data)
+{
+    std::vector<float> hasil;
+
+    hasil.reserve(data.size());
+
+    for (const auto &baris : data)
+    {
+        if (baris.size() != 1)
+        {
+            throw std::invalid_argument(
+                "Setiap baris harus memiliki satu elemen.");
+        }
+
+        hasil.push_back(baris[0]);
+    }
+
+    return hasil;
+}
+
 void neural_network_cpp::forward_nn()
 {
     // BAGIAN PERTAMA DENGAN NEURON LAYER 128
@@ -93,33 +114,74 @@ void neural_network_cpp::forward_nn()
 
 void neural_network_cpp::backward_nn()
 {
-    grad_y_pred = bce_loss.BCE_BACKWARD(y_pred, y_train);
+    // BACKWARD BINARY CROSS ENTROPY
+    grad_y_pred = bce_loss.BCE_BACKWARD(
+        y_pred,
+        y_train);
 
+    // BACKWARD SIGMOID
     grad_sigmoid = sigmoid_layer.SIGMOID_BACKWARD(
         y_pred,
         grad_y_pred);
 
-    grad_relu = relu_layer.RELU_BACKWARD(grad_sigmoid);
+    // BACKWARD DENSE OUTPUT
+    std::vector<std::vector<float>> grad_input_output =
+        dense_output_layer.DENSE_BACKWARD_LAYER(
+            x_train_output,
+            grad_sigmoid);
 
-    grad_relu_2 = relu_layer_2.RELU_BACKWARD(grad_relu);
+    std::vector<float> grad_i_o_3 = mengubah_2d_ke_1d(grad_input_output);
 
-    grad_relu_3 = relu_layer_3.RELU_BACKWARD(grad_relu_2);
+    // BACKWARD RELU 3
+    grad_relu_3 = relu_layer_3.RELU_BACKWARD(
+        grad_i_o_3);
 
-    dense_layer.DENSE_BACKWARD_LAYER(
-        x_train,
-        grad_relu);
+    // BACKWARD DENSE 3
+    std::vector<std::vector<float>> grad_input_dense_3 =
+        dense_layer_3.DENSE_BACKWARD_LAYER(
+            x_train_layer_3,
+            grad_relu_3);
 
-    dense_layer_2.DENSE_BACKWARD_LAYER(
-        x_train,
-        grad_relu_2);
+    std::vector<float> grad_i_d_3 = mengubah_2d_ke_1d(grad_input_dense_3);
 
-    dense_layer_3.DENSE_BACKWARD_LAYER(
-        x_train,
-        grad_relu_3);
+    // BACKWARD RELU 2
+    grad_relu_2 = relu_layer_2.RELU_BACKWARD(
+        grad_i_d_3);
+
+    // BACKWARD DENSE 2
+    std::vector<std::vector<float>> grad_input_dense_2 =
+        dense_layer_2.DENSE_BACKWARD_LAYER(
+            x_train_layer_2,
+            grad_relu_2);
+
+    std::vector<float> grad_i_d_2 = mengubah_2d_ke_1d(grad_input_dense_2);
+
+    // BACKWARD RELU 1
+    grad_relu = relu_layer.RELU_BACKWARD(
+        grad_i_d_2);
+
+    // BACKWARD DENSE 1
+    std::vector<std::vector<float>> grad_input_dense_1 =
+        dense_layer.DENSE_BACKWARD_LAYER(
+            x_train,
+            grad_relu);
 
     // OPTIMISASI UPDATE BOBOT DAN BIAS
-    SGD_OPTIM.update_parameter(dense_layer_3,
-                               learning_rate);
+    SGD_OPTIM.update_parameter(
+        dense_output_layer,
+        learning_rate);
+
+    SGD_OPTIM.update_parameter(
+        dense_layer_3,
+        learning_rate);
+
+    SGD_OPTIM.update_parameter(
+        dense_layer_2,
+        learning_rate);
+
+    SGD_OPTIM.update_parameter(
+        dense_layer,
+        learning_rate);
 }
 
 void neural_network_cpp::pelatihan_model_ai(
