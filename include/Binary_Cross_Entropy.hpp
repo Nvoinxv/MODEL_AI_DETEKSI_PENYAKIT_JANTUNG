@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <utils_program.hpp>
 
 class BCE_PERHITUNGAN
 {
@@ -19,6 +20,8 @@ private:
     float y_actual_grad;
 
     float hasil_perhitungan;
+
+    UTILS_CPP utils_cpp;
 
 public:
     BCE_PERHITUNGAN();

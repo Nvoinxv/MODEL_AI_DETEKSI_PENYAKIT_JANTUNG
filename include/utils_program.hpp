@@ -20,6 +20,8 @@ public:
     void print_vektor_1d_float(std::vector<float> &data);
 
     void print_vektor_struct_data(TIPE_DATA_TRAIN &a);
+
+    void print_vektor_1d_float_const(const std::vector<float> &data);
 };
 
 #endif

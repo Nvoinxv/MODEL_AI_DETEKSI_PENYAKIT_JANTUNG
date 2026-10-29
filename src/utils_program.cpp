@@ -128,3 +128,14 @@ void UTILS_CPP::print_vektor_struct_data(TIPE_DATA_TRAIN &a)
 
     std::cout << "\n";
 }
+
+void UTILS_CPP::print_vektor_1d_float_const(
+    const std::vector<float> &data_x)
+{
+    for (int i = 0; i < data_x.size(); ++i)
+    {
+        std::cout << data_x[i] << " ";
+    }
+
+    std::cout << "\n";
+}

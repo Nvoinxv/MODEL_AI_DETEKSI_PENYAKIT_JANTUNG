@@ -6,7 +6,8 @@ BCE_PERHITUNGAN::BCE_PERHITUNGAN() : hasil_perhitungan_tipe_data(),
                                      hasil_perhitungan(0.0f),
                                      y_pred(),
                                      y_actual_grad(0.0f),
-                                     y_pred_grad(0.0f)
+                                     y_pred_grad(0.0f),
+                                     utils_cpp()
 {
 }
 
@@ -16,11 +17,38 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
 {
     const float epsilon = 1e-7f;
 
+    // MEMBERIKAN SAMPLE UNTUK DEBUGGING
+    std::cout << "UKURAN Y_PRED: "
+              << y_pred.size() << "\n";
+
+    std::cout << "UKURAN Y_ACTUAL: "
+              << y_actual.size() << "\n";
+
     if (y_pred.size() != y_actual.size() ||
         y_pred.empty())
     {
         throw std::invalid_argument(
             "Ukuran y_pred dan y_actual harus sama dan tidak boleh kosong.");
+    }
+
+    size_t jumlah_debug = std::min(
+        size_t{16},
+        y_pred.size());
+
+    std::cout << "DEBUG SAMPLE Y_PRED:\n";
+
+    for (size_t i = 0; i < jumlah_debug; ++i)
+    {
+        std::cout << "INDEKS " << i
+                  << ": " << y_pred[i] << "\n";
+    }
+
+    std::cout << "DEBUG SAMPLE Y_ACTUAL:\n";
+
+    for (size_t i = 0; i < jumlah_debug; ++i)
+    {
+        std::cout << "INDEKS " << i
+                  << ": " << y_actual[i] << "\n";
     }
 
     hasil_perhitungan = 0.0f;
@@ -40,6 +68,9 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
                              (1.0f - y) *
                                  std::log(1.0f - p);
     }
+
+    std::cout << "DEBUG HASIL PERHITUNGAN PADA LOSS: "
+              << hasil_perhitungan << "\n";
 
     return hasil_perhitungan / static_cast<float>(
                                    y_pred.size());

@@ -2,9 +2,13 @@
 #define SGD_OPTIMISASI_HPP
 
 #include "Dense_Layer.hpp"
+#include "utils_program.hpp"
 
 class Sthocastic_Gradient_Descent
 {
+private:
+    UTILS_CPP utils_cpp;
+
 public:
     Sthocastic_Gradient_Descent();
 
