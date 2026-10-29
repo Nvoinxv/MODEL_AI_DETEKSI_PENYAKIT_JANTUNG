@@ -20,27 +20,28 @@ std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
 {
     std::vector<float> hasil_perhitungan_dense_forward;
 
-    (void)neuorn_total;
-
-    if (x_data.empty() || x_data[0].empty())
+    if (x_data.empty() ||
+        x_data[0].empty() ||
+        neuorn_total <= 0)
     {
         return hasil_perhitungan_dense_forward;
     }
 
     n_input = x_data[0].size();
-    n_output = 1;
+    n_output = static_cast<size_t>(neuorn_total);
 
     for (size_t i = 0; i < x_data.size(); ++i)
     {
         if (x_data[i].size() != n_input)
         {
-            return hasil_perhitungan_dense_forward;
+            throw std::invalid_argument(
+                "Jumlah fitur setiap sampel harus sama.");
         }
     }
 
     if (a.bobot.size() != n_output ||
-        (a.bobot.size() == n_output &&
-         a.bobot[0].size() != n_input))
+        a.bias.size() != n_output ||
+        a.bobot[0].size() != n_input)
     {
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -60,31 +61,37 @@ std::vector<float> DENSE_LAYER_NN::DENSE_FORWARD_LAYER(
             n_output,
             std::vector<float>(n_input));
 
-        for (size_t i = 0; i < n_input; ++i)
-        {
-            a.bobot[0][i] = dist(gen);
-        }
+        a.bias.assign(n_output, 0.0f);
 
-        a.bias = 0.0f;
-        bias = a.bias;
+        for (size_t i = 0; i < n_output; ++i)
+        {
+            for (size_t j = 0; j < n_input; ++j)
+            {
+                a.bobot[i][j] = dist(gen);
+            }
+        }
     }
 
-    hasil_perhitungan_dense_forward.reserve(x_data.size());
+    hasil_perhitungan_dense_forward.reserve(
+        x_data.size() * n_output);
 
     for (size_t i = 0; i < x_data.size(); ++i)
     {
-        float perhitungan_dense = 0.0f;
-
-        for (size_t j = 0; j < n_input; ++j)
+        for (size_t j = 0; j < n_output; ++j)
         {
-            perhitungan_dense +=
-                x_data[i][j] * a.bobot[0][j];
+            float perhitungan_dense = 0.0f;
+
+            for (size_t k = 0; k < n_input; ++k)
+            {
+                perhitungan_dense +=
+                    x_data[i][k] * a.bobot[j][k];
+            }
+
+            perhitungan_dense += a.bias[j];
+
+            hasil_perhitungan_dense_forward.push_back(
+                perhitungan_dense);
         }
-
-        perhitungan_dense += a.bias;
-
-        hasil_perhitungan_dense_forward.push_back(
-            perhitungan_dense);
     }
 
     return hasil_perhitungan_dense_forward;

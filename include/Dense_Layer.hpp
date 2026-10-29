@@ -15,7 +15,7 @@
 struct DENSE_PARAMETER
 {
     std::vector<std::vector<float>> bobot;
-    float bias = 0.0f;
+    std::vector<float> bias;
 };
 
 class DENSE_LAYER_NN
@@ -79,7 +79,7 @@ public:
         return a.bobot;
     }
 
-    float &mendapatkan_bias()
+    std::vector<float> &mendapatkan_bias()
     {
         return a.bias;
     }

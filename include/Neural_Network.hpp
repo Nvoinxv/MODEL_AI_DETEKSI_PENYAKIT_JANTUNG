@@ -30,6 +30,8 @@ private:
     TIPE_DATA_TRAIN variabel_train_test;
     TRAIN_TEST_DATA_X_Y train_test;
 
+    UTILS_CPP utils_cpp;
+
     // MEMPERSIAPKAN VARIABEL NEURON FORWARD
     std::vector<float> hasil_dense;
     std::vector<float> hasil_dense_2;
@@ -88,8 +90,8 @@ public:
         std::vector<float> &y_train,
         int &epoch);
 
-    void evaluasi_model_ai(std::vector<float> &y_train,
-                           std::vector<float> &y_test);
+    void evaluasi_model_ai(const std::vector<float> &y_train,
+                           const std::vector<float> &y_test);
 
     void pembersihan_memori_ai();
 };

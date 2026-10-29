@@ -11,6 +11,7 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
                                            sigmoid_layer(),
                                            SGD_OPTIM(),
                                            variabel_train_test(),
+                                           utils_cpp(),
                                            x_train(),
                                            x_train_layer_2(),
                                            x_train_layer_3(),
@@ -37,15 +38,27 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
 }
 
 std::vector<std::vector<float>> mengubah_1d_ke_2d(
-    const std::vector<float> &data)
+    const std::vector<float> &data,
+    size_t jumlah_neuron)
 {
     std::vector<std::vector<float>> hasil;
 
-    hasil.reserve(data.size());
-
-    for (const float &nilai : data)
+    if (jumlah_neuron == 0 ||
+        data.size() % jumlah_neuron != 0)
     {
-        hasil.push_back({nilai});
+        throw std::invalid_argument(
+            "Ukuran data tidak sesuai dengan jumlah neuron.");
+    }
+
+    size_t jumlah_data = data.size() / jumlah_neuron;
+
+    hasil.reserve(jumlah_data);
+
+    for (size_t i = 0; i < data.size(); i += jumlah_neuron)
+    {
+        hasil.emplace_back(
+            data.begin() + i,
+            data.begin() + i + jumlah_neuron);
     }
 
     return hasil;
@@ -56,17 +69,12 @@ std::vector<float> mengubah_2d_ke_1d(
 {
     std::vector<float> hasil;
 
-    hasil.reserve(data.size());
-
     for (const auto &baris : data)
     {
-        if (baris.size() != 1)
-        {
-            throw std::invalid_argument(
-                "Setiap baris harus memiliki satu elemen.");
-        }
-
-        hasil.push_back(baris[0]);
+        hasil.insert(
+            hasil.end(),
+            baris.begin(),
+            baris.end());
     }
 
     return hasil;
@@ -79,7 +87,7 @@ void neural_network_cpp::forward_nn()
     hasil_relu = relu_layer.RELU_FORWARD(hasil_dense);
 
     // BAGIAN KEDUA DENGAN NEURON LAYER 64
-    x_train_layer_2 = mengubah_1d_ke_2d(hasil_relu);
+    x_train_layer_2 = mengubah_1d_ke_2d(hasil_relu, 128);
 
     hasil_dense_2 = dense_layer_2.DENSE_FORWARD_LAYER(
         64,
@@ -88,7 +96,7 @@ void neural_network_cpp::forward_nn()
     hasil_relu_2 = relu_layer_2.RELU_FORWARD(hasil_dense_2);
 
     // BAGIAN KETIGA DENGAN NEURON LAYER 32
-    x_train_layer_3 = mengubah_1d_ke_2d(hasil_relu_2);
+    x_train_layer_3 = mengubah_1d_ke_2d(hasil_relu_2, 64);
 
     hasil_dense_3 = dense_layer_3.DENSE_FORWARD_LAYER(
         32,
@@ -97,7 +105,7 @@ void neural_network_cpp::forward_nn()
     hasil_relu_3 = relu_layer_3.RELU_FORWARD(hasil_dense_3);
 
     // BAGIAN AKHIR DENGAN OUTPUT LAYER
-    x_train_output = mengubah_1d_ke_2d(hasil_relu_3);
+    x_train_output = mengubah_1d_ke_2d(hasil_relu_3, 32);
 
     hasil_dense_output = dense_output_layer.DENSE_FORWARD_LAYER(
         1,
@@ -215,50 +223,85 @@ void neural_network_cpp::pelatihan_model_ai(
     std::cout << "PELATIHAN MODEL AI SELESAI\n";
 }
 
-void neural_network_cpp::evaluasi_model_ai(std::vector<float> &y_train,
-                                           std::vector<float> &y_test)
+void neural_network_cpp::evaluasi_model_ai(
+    const std::vector<float> &y_pred_test,
+    const std::vector<float> &y_test)
 {
     std::cout << "MEMULAI EVALUASI MODEL AI\n";
 
-    std::cout << "HASIL NILAI LOSS MODEL AI: "
-              << hasil_loss << "\n";
+    // std::cout << "UKURAN Y_PRED: ";
+    //  utils_cpp.print_vektor_1d_float_const(y_pred);
 
-    float hasil_akurasi = 0.0f;
+    // std::cout << "UKURAN Y_ACTUAL: ";
+    // utils_cpp.print_vektor_1d_float_const(y_pred_test);
 
-    for (int i = 0;
-         i < y_train.size();
-         ++i)
+    std::cout << "UKURAN Y_PRED: "
+              << y_pred_test.size() << "\n";
+
+    std::cout << "UKURAN Y_TES: "
+              << y_test.size() << "\n";
+
+    if (y_pred_test.size() != y_test.size())
     {
-        hasil_akurasi = (y_test[i]) / (y_train[i]);
+        throw std::invalid_argument(
+            "Jumlah prediksi dan label testing tidak sama.");
     }
 
-    float konversi_persen = hasil_akurasi * 100;
+    if (y_test.empty())
+    {
+        throw std::invalid_argument(
+            "Data testing kosong.");
+    }
+
+    std::cout << "JUMLAH DATA TESTING: "
+              << y_test.size() << "\n";
+
+    std::size_t jumlah_prediksi_benar = 0;
+
+    for (std::size_t i = 0; i < y_test.size(); ++i)
+    {
+        int prediksi = y_pred_test[i] >= 0.5f ? 1 : 0;
+        int aktual = y_test[i] >= 0.5f ? 1 : 0;
+
+        if (prediksi == aktual)
+        {
+            ++jumlah_prediksi_benar;
+        }
+    }
+
+    float hasil_akurasi =
+        static_cast<float>(jumlah_prediksi_benar) /
+        static_cast<float>(y_test.size());
+
+    float konversi_persen = hasil_akurasi * 100.0f;
 
     std::cout << "HASIL AKURASI MODEL: "
-              << konversi_persen
-              << "%" << "\n";
+              << konversi_persen << "%\n";
 
-    if (konversi_persen >= 70)
+    if (konversi_persen >= 70.0f)
     {
-        std::cout << "AKURASI HASIL PELATIHAN BAGUS\n";
+        std::cout << "AKURASI HASIL EVALUASI BAGUS\n";
     }
-
     else
     {
-        std::cout << "AKURASI HASIL PELATIHAN KURANG BAGUS\n";
+        std::cout << "AKURASI HASIL EVALUASI KURANG BAGUS\n";
     }
 
-    std::cout << "20 SAMPLE DATA KOMPERASI\n";
+    std::cout << "20 SAMPLE DATA KOMPARASI\n";
 
-    for (int i = 0;
-         i < 20;
-         ++i)
+    std::size_t jumlah_sample =
+        std::min<std::size_t>(20, y_test.size());
+
+    for (std::size_t i = 0; i < jumlah_sample; ++i)
     {
-        std::cout << "HASIL Y_ACUTAL: "
-                  << y_train[i]
-                  << " | " << "HASIL Y_PRED: "
+        int prediksi = y_pred_test[i] >= 0.5f ? 1 : 0;
+
+        std::cout << "HASIL Y_ACTUAL: "
                   << y_test[i]
-                  << "\n";
+                  << " | HASIL Y_PRED: "
+                  << y_pred_test[i]
+                  << " | HASIL KLASIFIKASI: "
+                  << prediksi << "\n";
     }
 }
 
