@@ -142,8 +142,12 @@ int main()
         y_train,
         epoch);
 
+    nn_train.forward_nn_test(
+        x_test,
+        y_test);
+
     nn_train.evaluasi_model_ai(
-        y_train,
+        nn_train.mendapatkan_y_pred_test(),
         y_test);
 
     nn_train.pembersihan_memori_ai();

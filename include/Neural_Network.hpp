@@ -100,10 +100,12 @@ public:
     neural_network_cpp();
 
     void forward_nn();
-    void forward_nn_test();
+    void forward_nn_test(
+        std::vector<std::vector<float>> &x_test,
+        std::vector<float> &y_test);
 
     void backward_nn();
-    void backward_nn_test();
+    // void backward_nn_test();
 
     void pelatihan_model_ai(
         std::vector<std::vector<float>> &x_train,
@@ -114,6 +116,11 @@ public:
                            const std::vector<float> &y_test);
 
     void pembersihan_memori_ai();
+
+    std::vector<float> mendapatkan_y_pred_test()
+    {
+        return y_pred_test;
+    }
 };
 
 #endif
