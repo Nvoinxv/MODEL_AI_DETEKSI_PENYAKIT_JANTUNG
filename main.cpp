@@ -56,7 +56,7 @@ int main()
 
     // TESTING DUMMY DATA
     // MENCOBA PERHITUNGAN LOSS
-
+    /*
     std::cout << "MENCOBA DUMMY PERHITUNGAN\n";
 
     std::vector<float> data_mentah_asli;
@@ -70,12 +70,12 @@ int main()
     utils_cpp.data_random_int_1d(data_mentah_pred, n);
     BCE_PERHITUNGAN bce;
 
-    /*
+
     TESTING SUPPORT TIPE DATA STRUCT
     TIPE_DATA_TRAIN forward_bce = bce.BCE_FORWARD(
     train_test_data.y_train,
     train_test_data.y_test);
-    */
+
 
     std::cout << "TESTING PADA DATA FORWARD BCE\n";
 
@@ -119,6 +119,7 @@ int main()
     utils_cpp.print_vektor_1d_float(hasil_sigmoid_dummy);
 
     std::cout << "PERHITUNGAN DUMMY SELESAI\n";
+    */
 
     // IMPLEMENTASI PADA NEURAL_NETWORK
     std::cout << "MEMULAI PELATIHAN NEURAL NETWORK\n";
