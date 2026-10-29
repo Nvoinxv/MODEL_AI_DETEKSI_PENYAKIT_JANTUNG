@@ -48,6 +48,8 @@ private:
     std::vector<float> grad_sigmoid;
 
     std::vector<float> grad_relu;
+    std::vector<float> grad_relu_2;
+    std::vector<float> grad_relu_3;
 
     float hasil_loss;
 

@@ -56,6 +56,7 @@ int main()
 
     // TESTING DUMMY DATA
     // MENCOBA PERHITUNGAN LOSS
+
     /*
     std::cout << "MENCOBA DUMMY PERHITUNGAN\n";
 

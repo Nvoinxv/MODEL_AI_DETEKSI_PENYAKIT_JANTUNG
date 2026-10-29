@@ -135,11 +135,20 @@ std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
             bobot_grad[j] +=
                 x_data[i][j] * x_data_grad[i];
 
+            std::cout << "DEBUG BOBOT GRAD: "
+                      << bobot_grad[i] << "\n";
+
             hasil_output_grad[i][j] =
                 a.bobot[0][j] * x_data_grad[i];
+
+            std::cout << "DEBUG OUTPUT GRAD: "
+                      << hasil_output_grad[i][j] << "\n";
         }
 
         bias_grad += x_data_grad[i];
+
+        std::cout << "DEBUG BIAS GRAD: "
+                  << bias_grad << "\n";
     }
 
     float jumlah_data = static_cast<float>(x_data.size());

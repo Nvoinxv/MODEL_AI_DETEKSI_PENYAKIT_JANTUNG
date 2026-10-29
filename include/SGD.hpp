@@ -3,6 +3,7 @@
 
 #include "Dense_Layer.hpp"
 #include "utils_program.hpp"
+#include <iomanip>
 
 class Sthocastic_Gradient_Descent
 {
