@@ -33,6 +33,7 @@ private:
     UTILS_CPP utils_cpp;
 
     // MEMPERSIAPKAN VARIABEL NEURON FORWARD
+    // VERSI TRAIN
     std::vector<float> hasil_dense;
     std::vector<float> hasil_dense_2;
     std::vector<float> hasil_dense_3;
@@ -75,15 +76,34 @@ private:
     std::vector<std::vector<float>> x_train_output;
 
     std::vector<std::vector<float>> x_test = pembagian_pelatihan.x_test;
+    std::vector<std::vector<float>> x_test_layar_2;
+    std::vector<std::vector<float>> x_test_layar_3;
+    std::vector<std::vector<float>> x_test_output;
 
     std::vector<float> y_train = pembagian_pelatihan.y_train;
+
     std::vector<float> y_test = pembagian_pelatihan.y_test;
+
+    // VERSI TEST
+    std::vector<float> y_pred_test;
+
+    std::vector<float> hasil_dense_test;
+    std::vector<float> hasil_dense_test_2;
+    std::vector<float> hasil_dense_test_3;
+    std::vector<float> hasil_output_dense_test;
+
+    std::vector<float> hasil_relu_test;
+    std::vector<float> hasil_relu_test_2;
+    std::vector<float> hasil_relu_test_3;
 
 public:
     neural_network_cpp();
 
     void forward_nn();
+    void forward_nn_test();
+
     void backward_nn();
+    void backward_nn_test();
 
     void pelatihan_model_ai(
         std::vector<std::vector<float>> &x_train,

@@ -17,6 +17,9 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
                                            x_train_layer_3(),
                                            x_train_output(),
                                            x_test(),
+                                           x_test_layar_2(),
+                                           x_test_layar_3(),
+                                           x_test_output(),
                                            y_train(),
                                            y_test(),
                                            hasil_dense(),
@@ -27,6 +30,14 @@ neural_network_cpp::neural_network_cpp() : bce_loss(),
                                            hasil_relu_2(),
                                            hasil_relu_3(),
                                            y_pred(),
+                                           y_pred_test(),
+                                           hasil_dense_test(),
+                                           hasil_dense_test_2(),
+                                           hasil_dense_test_3(),
+                                           hasil_output_dense_test(),
+                                           hasil_relu_test(),
+                                           hasil_relu_test_2(),
+                                           hasil_relu_test_3(),
                                            grad_y_pred(),
                                            grad_sigmoid(),
                                            grad_relu(),
@@ -118,6 +129,32 @@ void neural_network_cpp::forward_nn()
 
     // PERHITUNGAN LOSS
     hasil_loss = bce_loss.BCE_FORWARD(y_pred, y_train);
+}
+
+void neural_network_cpp::forward_nn_test()
+{
+    hasil_dense_test = dense_layer.DENSE_FORWARD_LAYER(128, x_test);
+    hasil_relu_test = relu_layer.RELU_FORWARD(hasil_dense_test);
+
+    x_test_layar_2 = mengubah_1d_ke_2d(hasil_relu_test, 128);
+
+    hasil_dense_test_2 = dense_layer_2.DENSE_FORWARD_LAYER(64, x_test_layar_2);
+    hasil_relu_test_2 = relu_layer_2.RELU_FORWARD(hasil_dense_test_2);
+
+    x_test_layar_3 = mengubah_1d_ke_2d(hasil_relu_2, 64);
+
+    hasil_dense_test_3 = dense_layer_3.DENSE_FORWARD_LAYER(32, x_test_layar_3);
+    hasil_relu_test_3 = relu_layer_3.RELU_FORWARD(hasil_dense_test_3);
+
+    x_test_output = mengubah_1d_ke_2d(hasil_relu_test_3, 1);
+
+    hasil_output_dense_test = dense_output_layer.DENSE_FORWARD_LAYER(
+        1,
+        x_test_output);
+
+    y_pred_test = sigmoid_layer.SIGMOID_FORWARD(1, hasil_output_dense_test);
+
+    hasil_loss = bce_loss.BCE_FORWARD(y_pred_test, y_test);
 }
 
 void neural_network_cpp::backward_nn()
