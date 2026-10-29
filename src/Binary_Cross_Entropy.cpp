@@ -16,6 +16,15 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
 {
     const float epsilon = 1e-7f;
 
+    if (y_pred.size() != y_actual.size() ||
+        y_pred.empty())
+    {
+        throw std::invalid_argument(
+            "Ukuran y_pred dan y_actual harus sama dan tidak boleh kosong.");
+    }
+
+    hasil_perhitungan = 0.0f;
+
     for (size_t i = 0;
          i < y_pred.size();
          ++i)
@@ -27,7 +36,7 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
 
         float y = y_actual[i];
 
-        hasil_perhitungan += y * std::log(p) +
+        hasil_perhitungan -= y * std::log(p) +
                              (1.0f - y) *
                                  std::log(1.0f - p);
     }
@@ -41,6 +50,13 @@ std::vector<float> BCE_PERHITUNGAN::BCE_BACKWARD(
     std::vector<float> &y_actual)
 {
     const float epsilon = 1e-7f;
+
+    if (y_pred.size() != y_actual.size() ||
+        y_pred.empty())
+    {
+        throw std::invalid_argument(
+            "Ukuran y_pred dan y_actual harus sama dan tidak boleh kosong.");
+    }
 
     std::vector<float> grad_y_pred;
     grad_y_pred.reserve(y_pred.size());
@@ -56,11 +72,11 @@ std::vector<float> BCE_PERHITUNGAN::BCE_BACKWARD(
 
         float y = y_actual[i];
 
-        hasil_perhitungan = (p - y) /
-                            (p * (1.0f - p));
+        float grad = (p - y) /
+                     (p * (1.0f - p));
 
         grad_y_pred.push_back(
-            hasil_perhitungan /
+            grad /
             static_cast<float>(y_pred.size()));
     }
 

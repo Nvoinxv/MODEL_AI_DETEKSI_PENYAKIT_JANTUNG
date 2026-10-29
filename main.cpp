@@ -78,6 +78,13 @@ int main()
     */
 
     std::cout << "TESTING PADA DATA FORWARD BCE\n";
+
+    std::cout << "DATA DUMMY Y_PRED: ";
+    utils_cpp.print_vektor_1d_float(data_mentah_pred);
+
+    std::cout << "DATA DUMMY Y_ACTUAL: ";
+    utils_cpp.print_vektor_1d_float(data_mentah_asli);
+
     float forward_bce_test = bce.BCE_FORWARD(data_mentah_asli, data_mentah_pred);
 
     std::cout << "HASIL LOSS TESTING FORWARD: "
