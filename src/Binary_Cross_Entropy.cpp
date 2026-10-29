@@ -18,11 +18,13 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
     const float epsilon = 1e-7f;
 
     // MEMBERIKAN SAMPLE UNTUK DEBUGGING
+    /*
     std::cout << "UKURAN Y_PRED: "
               << y_pred.size() << "\n";
 
     std::cout << "UKURAN Y_ACTUAL: "
               << y_actual.size() << "\n";
+    */
 
     if (y_pred.size() != y_actual.size() ||
         y_pred.empty())
@@ -31,6 +33,7 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
             "Ukuran y_pred dan y_actual harus sama dan tidak boleh kosong.");
     }
 
+    /*
     size_t jumlah_debug = std::min(
         size_t{16},
         y_pred.size());
@@ -51,6 +54,8 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
                   << ": " << y_actual[i] << "\n";
     }
 
+    */
+
     hasil_perhitungan = 0.0f;
 
     for (size_t i = 0;
@@ -69,8 +74,8 @@ float BCE_PERHITUNGAN::BCE_FORWARD(
                                  std::log(1.0f - p);
     }
 
-    std::cout << "DEBUG HASIL PERHITUNGAN PADA LOSS: "
-              << hasil_perhitungan << "\n";
+    // std::cout << "DEBUG HASIL PERHITUNGAN PADA LOSS: "
+    // << hasil_perhitungan << "\n";
 
     return hasil_perhitungan / static_cast<float>(
                                    y_pred.size());

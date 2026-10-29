@@ -94,71 +94,81 @@ std::vector<std::vector<float>> DENSE_LAYER_NN::DENSE_BACKWARD_LAYER(
     std::vector<std::vector<float>> &x_data,
     std::vector<float> &x_data_grad)
 {
-    hasil_output_grad.clear();
-    bobot_grad.clear();
+    if (x_data.empty() ||
+        x_data[0].empty() ||
+        a.bobot.empty() ||
+        a.bobot[0].empty())
+    {
+        throw std::invalid_argument(
+            "Input dan bobot dense tidak boleh kosong.");
+    }
 
+    size_t jumlah_data = x_data.size();
+    size_t jumlah_input = x_data[0].size();
+    size_t jumlah_output = a.bobot[0].size();
+
+    if (x_data_grad.size() != jumlah_data * jumlah_output)
+    {
+        throw std::invalid_argument(
+            "Ukuran gradien output tidak sesuai dengan output dense.");
+    }
+
+    if (a.bobot.size() != jumlah_input)
+    {
+        throw std::invalid_argument(
+            "Ukuran bobot tidak sesuai dengan jumlah input.");
+    }
+
+    for (const auto &baris : x_data)
+    {
+        if (baris.size() != jumlah_input)
+        {
+            throw std::invalid_argument(
+                "Jumlah fitur setiap sampel harus sama.");
+        }
+    }
+
+    for (const auto &baris : a.bobot)
+    {
+        if (baris.size() != jumlah_output)
+        {
+            throw std::invalid_argument(
+                "Ukuran setiap baris bobot harus sama.");
+        }
+    }
+
+    bobot_grad.assign(jumlah_input * jumlah_output, 0.0f);
     bias_grad = 0.0f;
 
-    if (x_data.empty() ||
-        x_data_grad.size() != x_data.size() ||
-        a.bobot.size() != 1)
-    {
-        return hasil_output_grad;
-    }
+    std::vector<std::vector<float>> grad_input(
+        jumlah_data,
+        std::vector<float>(jumlah_input, 0.0f));
 
-    n_input = x_data[0].size();
-
-    if (n_input == 0 || a.bobot[0].size() != n_input)
+    for (size_t i = 0;
+         i < jumlah_data;
+         ++i)
     {
-        return hasil_output_grad;
-    }
-
-    for (size_t i = 0; i < x_data.size(); ++i)
-    {
-        if (x_data[i].size() != n_input)
+        for (size_t j = 0;
+             j < jumlah_output;
+             ++j)
         {
-            hasil_output_grad.clear();
-            return hasil_output_grad;
+            float grad_output =
+                x_data_grad[i * jumlah_output + j];
+
+            bias_grad += grad_output;
+
+            for (size_t k = 0;
+                 k < jumlah_input;
+                 ++k)
+            {
+                bobot_grad[k * jumlah_output + j] +=
+                    x_data[i][k] * grad_output;
+
+                grad_input[i][k] +=
+                    grad_output * a.bobot[k][j];
+            }
         }
     }
 
-    bobot_grad.assign(n_input, 0.0f);
-
-    hasil_output_grad.assign(
-        x_data.size(),
-        std::vector<float>(n_input, 0.0f));
-
-    for (size_t i = 0; i < x_data.size(); ++i)
-    {
-        for (size_t j = 0; j < n_input; ++j)
-        {
-            bobot_grad[j] +=
-                x_data[i][j] * x_data_grad[i];
-
-            std::cout << "DEBUG BOBOT GRAD: "
-                      << bobot_grad[i] << "\n";
-
-            hasil_output_grad[i][j] =
-                a.bobot[0][j] * x_data_grad[i];
-
-            std::cout << "DEBUG OUTPUT GRAD: "
-                      << hasil_output_grad[i][j] << "\n";
-        }
-
-        bias_grad += x_data_grad[i];
-
-        std::cout << "DEBUG BIAS GRAD: "
-                  << bias_grad << "\n";
-    }
-
-    float jumlah_data = static_cast<float>(x_data.size());
-
-    for (size_t j = 0; j < n_input; ++j)
-    {
-        bobot_grad[j] /= jumlah_data;
-    }
-
-    bias_grad /= jumlah_data;
-
-    return hasil_output_grad;
+    return grad_input;
 }

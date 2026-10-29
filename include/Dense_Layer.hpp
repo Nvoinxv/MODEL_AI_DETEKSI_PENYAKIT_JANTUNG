@@ -9,6 +9,7 @@
 #include <random>
 #include <cmath>
 #include <vector>
+#include <stdexcept>
 #include <cstddef>
 
 struct DENSE_PARAMETER
